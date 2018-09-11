@@ -1,0 +1,37 @@
+{
+    "name": "noticias",
+    "manifest_version":2,
+    "description": "Retornar notícias similares a que você está lendo.",
+    "version": "1.0",
+    "permissions": [
+        "unlimited_storage",
+        "notifications",
+        "contextMenus",
+        "cookies",
+        "storage",
+        "idle",
+        "tabs",
+        "activeTab"
+    ],
+    "icons": {
+        "128": "notices.png"
+    },
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://g1.globo.com/*",
+                "*://br.blastingnews.com/*",
+                "*://noticias.uol.com.br/noticias*"
+            ],
+            "js": [
+                "js/jquery-3.3.1.min.js",
+                "js/popup.js"
+            ],
+            "run_at": "document_end",
+            "persistent": false
+        }
+    ]
+}
