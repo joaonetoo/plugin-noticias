@@ -19,6 +19,9 @@
     "browser_action": {
         "default_popup": "popup.html"
     },
+    "background": {
+        "scripts":["js/background.js"]
+      },    
     "content_scripts": [
         {
             "matches": [
@@ -28,8 +31,7 @@
             ],
             "js": [
                 "js/jquery-3.3.1.min.js",
-                "js/popup.js"
-            ],
+                "js/popup.js"],
             "run_at": "document_end",
             "persistent": false
         }
