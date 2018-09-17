@@ -16,3 +16,4 @@ chrome.runtime.onMessage.addListener(
     }
     sendResponse({change: false});
   });
+

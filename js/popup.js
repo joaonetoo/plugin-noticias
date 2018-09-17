@@ -3,13 +3,33 @@ var url
 chrome.tabs.getSelected(null,function(tab) {
     url = tab.url;
 });
-
+function website(website){
+    if (website == 'globo') {
+        return 'images/g1.jpg'
+    } else if (website == 'uol') {
+        return 'images/uol.jpg'
+    } else{
+        return 'images/blasting.png'
+    }
+}
+function createCard(titulo,link,image,date){
+    var html= '<a class="notice-link" href="'+link+'">' +      
+    '<article class="notice">'+
+    '<img src="'+image+'" class="notice-hero">'+
+    '<div class="notice-text">'+
+        '<h4 class="notice-title">'+titulo+'</h4>'+
+        '<p class="notice-description">'+date+'</p>'+
+    '</div>'+
+    '</article>'+
+    '</a>'
+    return html
+}
 chrome.runtime.sendMessage({ teste: url}, function(response) {
     if (response.change){
         chrome.storage.sync.set({'news': 'false'}, function() {
-            $('#notice').remove();
+            $('.pen-wrapper').remove();
             $("#button_notices").show();
-            $('.main').append('<div id=notice></div>');
+            $('.main').append('<div class="pen-wrapper"></div>');
         });
     }
     var notices
@@ -21,9 +41,8 @@ chrome.runtime.sendMessage({ teste: url}, function(response) {
                     $("#button_notices").hide();
                     $( ".main" ).append( '<div class="cssload-container"> </div>');
                     $( ".cssload-container" ).append( '<div class="cssload-whirlpool"></div>');
-        
                         $.ajax({
-                            url : "http://206.189.215.95/notices",
+                            url : "http://0.0.0.0:5000/notices",
                             type : 'get',
                             data : {
                                 site : url
@@ -34,17 +53,12 @@ chrome.runtime.sendMessage({ teste: url}, function(response) {
                             chrome.storage.sync.set({'news': notices}, function() {
                             });
                             $(".cssload-container").hide();
-                            if (notices.length > 0 ){
-                                $('#notice').append('<ul> </ul>');                
+                            if (notices.length > 0 ){                
                                 notices.forEach(value => {
-                                    $('#notice ul').append(
-                                        $('<li>').append(
-                                            $('<a>').attr('href',value[1]).append(
-                                                value[0]
-                                            )
-                                        )
-                                    )
-                                });
+                                    site = website(value[2])
+                                    html = createCard(value[0],value[1],site,value[3])
+                                    $('.pen-wrapper').append(html);
+                                    });
                             }else{
                                 $('#notice').append('<p> Não foram encontradas notícias parecidas! </p>' )
                             }
@@ -57,17 +71,11 @@ chrome.runtime.sendMessage({ teste: url}, function(response) {
             }else{
                 if (notices.length > 0 ){
                     $("#button_notices").hide();
-                    $('#notice').append('<ul> </ul>');                
                     notices.forEach(value => {
-                        $('#notice ul').append(
-                            $('<li>').append(
-                                $('<a>').attr('href',value[1]).append(
-                                    value[0]
-                                )
-                            )
-                        )
+                        site = website(value[2])
+                        html = createCard(value[0],value[1],site,value[3])  
+                        $('.pen-wrapper').append(html);
                     });
-
                 
                 }else{
                     $('#notice').append('<p> Não foram encontradas notícias parecidas! </p>' )
