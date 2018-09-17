@@ -42,7 +42,7 @@ chrome.runtime.sendMessage({ teste: url}, function(response) {
                     $( ".main" ).append( '<div class="cssload-container"> </div>');
                     $( ".cssload-container" ).append( '<div class="cssload-whirlpool"></div>');
                         $.ajax({
-                            url : "http://0.0.0.0:5000/notices",
+                            url : "http://206.189.215.95/notices",
                             type : 'get',
                             data : {
                                 site : url
